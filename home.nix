@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 
 {
@@ -11,7 +11,7 @@
     isNormalUser = true;
     home = "/home/andrea";
     description = "Andrea Ciceri";
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "video" ];
   };
 
   home-manager.users.andrea = {
@@ -76,7 +76,12 @@
         {
           enable = true;
           config = {
-            modifier = modifier;
+            inherit modifier;
+            keybindings = lib.mkOptionDefault
+              {
+                "${modifier}+a" = "exec ${pkgs.light}/bin/light -A 5";
+                "${modifier}+s" = "exec ${pkgs.light}/bin/light -U 5";
+              };
             menu = "${pkgs.bemenu}/bin/bemenu-run -b -m 1";
             fonts = {
               names = [ "Font Awesome" "Fira Code" ];
@@ -96,10 +101,15 @@
               ];
             };
           };
+
           extraConfig = ''
             bindsym ${modifier}+p move workspace to output right
             exec systemctl --user import-environment
             exec systemctl --user start graphical-session.target
+            set $laptop "eDP-1"
+            bindswitch --reload --locked lid:on output $laptop disable
+            bindswitch --reload --locked lid:off output $laptop enable
+
           '';
           xwayland = true;
           systemdIntegration = false;

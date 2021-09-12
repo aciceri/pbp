@@ -19,6 +19,11 @@
       };
       package = pkgs.redshift-wlr;
     };
+
+    udev.extraRules = ''
+      ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="acpi_video0", GROUP="video", MODE="0664" #for the backlight setting as user in video group
+    '';
+
   };
 }
 

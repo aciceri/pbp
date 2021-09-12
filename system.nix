@@ -70,6 +70,7 @@
   ];
 
   location.provider = "geoclue2";
+  programs.light.enable = true;
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;

@@ -8,7 +8,9 @@
 
   boot.initrd.availableKernelModules = [ "usbhid" ];
   boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    v4l2loopback
+  ];
 
   fileSystems."/" =
     {
